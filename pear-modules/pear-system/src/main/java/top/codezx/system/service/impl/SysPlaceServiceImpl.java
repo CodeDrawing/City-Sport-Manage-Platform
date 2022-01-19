@@ -19,10 +19,11 @@ public class SysPlaceServiceImpl implements ISysPlaceService {
     @Resource
     SysPlaceMapper sysPlaceMapper;
 
-    public List<SysPlace> page(SysPlace param, PageDomain pageDomain){
+    public PageInfo<SysPlace> page(SysPlace param, PageDomain pageDomain){
         PageHelper.startPage(pageDomain.getPage(), pageDomain.getLimit());
         List<SysPlace> sysPlaces = sysPlaceMapper.selectList(param);
         return new PageInfo<>(sysPlaces);
     };
+
 
 }

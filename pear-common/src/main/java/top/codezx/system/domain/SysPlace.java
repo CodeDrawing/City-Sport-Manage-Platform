@@ -13,13 +13,14 @@ import java.util.Date;
 @NoArgsConstructor
 @ToString
 public class SysPlace {
-    Integer placeId;
+    String placeId;
     String placeName;
-    Integer createAdministratorsId;
+    String createAdministratorsId;
     String sportProject;
     Date createData;
     String notice;
-    Integer managerId;
+    String managerId;
+    String userName;
 
 
 }

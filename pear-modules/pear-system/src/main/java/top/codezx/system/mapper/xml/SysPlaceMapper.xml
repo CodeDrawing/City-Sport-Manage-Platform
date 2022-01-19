@@ -13,7 +13,7 @@
     </resultMap>
 
     <select id="selectList" resultMap="SysPlaceMap">
-        select * from sys_placeInfo sp,system_user su
+        select * from sys_placeInfo sp,sys_user su
         where sp.manager_id=su.user_id
     </select>
 
