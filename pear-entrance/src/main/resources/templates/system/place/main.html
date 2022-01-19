@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('用户列表')"/>
+    <link rel="stylesheet" th:href="@{/admin/css/other/user.css}"/>
+</head>
+<body class="pear-container">
+<div class="layui-card">
+    <div class="layui-card-body">
+        <form action="" class="layui-form" lay-filter="user-query-form">
+            <div class="layui-form-item">
+
+                <label class="layui-form-label">场所名称</label>
+                <div class="layui-input-inline">
+                    <input class="layui-input" name="username" placeholder="" type="text">
+                </div>
+                <button class="pear-btn pear-btn-md pear-btn-primary" lay-filter="user-query" lay-submit>
+                    <i class="layui-icon layui-icon-search"></i>
+                    查询
+                </button>
+                <button class="pear-btn pear-btn-md" type="reset">
+                    <i class="layui-icon layui-icon-refresh"></i>
+                    重置
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="user-main user-collasped">
+    <div class="layui-card">
+        <div class="layui-card-body">
+            <table id="user-table" lay-filter="user-table"></table>
+        </div>
+    </div>
+</div>
+</body>
+
+<script id="user-toolbar" type="text/html">
+    <button sec:authorize="hasPermission('/system/place/add','sys:place:add')"
+            class="pear-btn pear-btn-primary pear-btn-md" lay-event="add">
+        <i class="pear-icon pear-icon-add"></i>
+        新增
+    </button>
+    <button sec:authorize="hasPermission('/system/place/remove','sys:place:remove')" class="pear-btn pear-btn-md"
+            lay-event="batchRemove">
+        <i class="pear-icon pear-icon-ashbin"></i>
+        删除
+    </button>
+
+</script>
+
+<script id="user-bar" type="text/html">
+    <button sec:authorize="hasPermission('/system/place/edit','sys:place:edit')"
+            class="pear-btn pear-btn-primary pear-btn-sm" lay-event="edit"><i class="pear-icon pear-icon-edit"></i>
+    </button>
+    <button sec:authorize="hasPermission('/system/place/remove','sys:place:remove')"
+            class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove"><i class="pear-icon pear-icon-ashbin"></i>
+    </button>
+
+</script>
+
+
+<th:block th:include="include :: footer"/>
+<script>
+    layui.use(['table', 'dtree', 'form', 'jquery', 'popup', 'common'], function () {
+        let table = layui.table;
+        let form = layui.form;
+        let $ = layui.jquery;
+        let dtree = layui.dtree;
+        let popup = layui.popup;
+        let common = layui.common;
+
+        let MODULE_PATH = "/system/place/";
+
+        let cols = [
+            [
+                {type: 'checkbox'},
+                {title: '场馆名称', field: 'realName', align: 'center', width: 110},
+                {title: '运动项目', field: 'username', align: 'center'},
+                {title: '创建时间', field: 'sex', align: 'center', width: 60},
+                {title: '管理员姓名', field: 'phone', align: 'center'},
+                {title: '公告', field: 'enable', align: 'center', width: 120},
+                {title: '操作', toolbar: '#user-bar', align: 'center', width: 180}
+            ]
+        ]
+
+        table.render({
+            elem: '#user-table',
+            url: MODULE_PATH + 'data',
+            page: true,
+            cols: cols,
+            skin: 'line',
+            height: 'full-148',
+            toolbar: '#user-toolbar',
+            text: {none: '暂无场所信息'},
+            defaultToolbar: [{
+                layEvent: 'refresh',
+                icon: 'layui-icon-refresh',
+                title: "刷新"
+            }, 'filter', 'print', 'exports']
+        });
+
+
+        $(".user-group").click(function () {
+            let group = $(this).attr("user-group");
+            let field = form.val("user-query-form");
+            if (group === "-1") {
+                field.deptId = group;
+                $(this).removeClass("button-default");
+                $(this).prev().removeClass("button-primary");
+                $(this).prev().addClass("button-default");
+                $(this).addClass("button-primary");
+            } else {
+                field.deptId = group;
+                $(this).removeClass("button-default");
+                $(this).next().removeClass("button-primary");
+                $(this).next().addClass("button-default");
+                $(this).addClass("button-primary");
+            }
+            window.refresh(field);
+        })
+
+        table.on('tool(user-table)', function (obj) {
+            if (obj.event === 'remove') {
+                window.remove(obj);
+            } else if (obj.event === 'edit') {
+                window.edit(obj);
+            }else if (obj.event === 'editpasswordadmin') {
+                window.editpasswordadmin(obj);
+            }
+        });
+
+        table.on('toolbar(user-table)', function (obj) {
+            if (obj.event === 'add') {
+                window.add();
+            } else if (obj.event === 'refresh') {
+                window.refresh();
+            } else if (obj.event === 'batchRemove') {
+                window.batchRemove(obj);
+            } else if (obj.event == 'collasped') {
+                $(".user-left").toggleClass("user-collasped");
+                $(".user-main").toggleClass("user-collasped");
+                table.resize();
+            }
+        });
+
+        form.on('submit(user-query)', function (data) {
+            window.refresh(data.field);
+            return false;
+        });
+
+        form.on('switch(user-enable)', function (obj) {
+            let operate;
+            if (obj.elem.checked) {
+                operate = "enable";
+            } else {
+                operate = "disable";
+            }
+            let loading = layer.load();
+            $.ajax({
+                url: '/system/user/' + operate,
+                data: JSON.stringify({userId: this.value}),
+                dataType: 'json',
+                contentType: 'application/json',
+                type: 'put',
+                success: function (result) {
+                    layer.close(loading);
+                    if (result.success) {
+                        popup.success(result.msg);
+                    } else {
+                        popup.failure(result.msg);
+                    }
+                }
+            })
+        });
+
+        window.add = function () {
+            layer.open({
+                type: 2,
+                title: '新增',
+                shade: 0.1,
+                area: ['550px', '550px'],
+                content: MODULE_PATH + 'add'
+            });
+        }
+
+        window.edit = function (obj) {
+            layer.open({
+                type: 2,
+                title: '修改',
+                shade: 0.1,
+                area: ['550px', '500px'],
+                content: MODULE_PATH + 'edit?PlaceId=' + obj.data['PlaceId']
+            });
+        }
+
+
+        window.remove = function (obj) {
+            layer.confirm('确定要删除该场所', {icon: 3, title: '提示'}, function (index) {
+                layer.close(index);
+                let loading = layer.load();
+                $.ajax({
+                    url: MODULE_PATH + "remove/" + obj.data['PlaceId'],
+                    dataType: 'json',
+                    type: 'delete',
+                    success: function (result) {
+                        layer.close(loading);
+                        if (result.success) {
+                            popup.success(result.msg, function () {
+                                obj.del();
+                            });
+                        } else {
+                            popup.failure(result.msg);
+                        }
+                    }
+                })
+            });
+        }
+
+        window.batchRemove = function (obj) {
+            let ids = common.checkField(obj, 'userId');
+            if (common.isEmpty(ids)) {
+                popup.warning("未选中数据");
+                return false;
+            }
+            layer.confirm('确定要删除选中场所', {icon: 3, title: '提示'}, function (index) {
+                layer.close(index);
+                let loading = layer.load();
+                $.ajax({
+                    url: MODULE_PATH + "batchRemove/" + ids,
+                    dataType: 'json',
+                    type: 'delete',
+                    success: function (result) {
+                        layer.close(loading);
+                        if (result.success) {
+                            popup.success(result.msg, function () {
+                                table.reload('user-table');
+                            })
+                        } else {
+                            popup.failure(result.msg);
+                        }
+                    }
+                })
+            });
+        }
+
+        window.refresh = function (param) {
+            table.reload('user-table', {where: param});
+        }
+    })
+</script>
+</html>

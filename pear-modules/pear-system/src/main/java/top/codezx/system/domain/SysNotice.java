@@ -6,8 +6,8 @@ import lombok.Data;
 /**
  * notice对象 sys_notice
  *
- * @author jmys
- * @date 2021-03-13
+ * @author zx
+ * @date 2022-01-19
  */
 @Data
 public class SysNotice extends BaseDomain {
