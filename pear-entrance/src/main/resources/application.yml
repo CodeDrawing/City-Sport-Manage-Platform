@@ -69,6 +69,9 @@ pear:
       - /admin/** # 开放静态资源
       - /component/** # 开放静态资源
       - /favicon.ico # 开放FAVICON
+      - /system/place/toArrivalLogin/** #开放场馆打卡跳转
+      - /system/place/arrivalLogin/** #开放场馆打卡登陆
+      - /system/place/to/** #开放场馆打卡成功页面
 
   # 上传配置
   upload:
