@@ -20,6 +20,8 @@ public class SysPlace {
     Date createData;
     String notice;
     String managerId;
+    String deptId;
+    String deptName;
     String userName;
 
 

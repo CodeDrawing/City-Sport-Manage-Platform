@@ -60,6 +60,10 @@
 
 </script>
 
+<script id="place-createData" type="text/html">
+    {{layui.util.toDateString(d.createData,  'yyyy-MM-dd HH:mm:ss')}}
+</script>
+
 
 <th:block th:include="include :: footer"/>
 <script>
@@ -77,9 +81,10 @@
             [
                 {type: 'checkbox'},
                 {title: '场馆名称', field: 'placeName', align: 'center'},
-                {title: '创建时间', field: 'createData', align: 'center'},
+                {title: '创建时间', field: 'createData', align: 'center', templet: "#place-createData"},
                 {title: '管理员姓名', field: 'userName', align: 'center'},
                 {title: '公告', field: 'notice', align: 'center'},
+                {title: '所属部门', field: 'deptName', align: 'center'},
                 {title: '操作', toolbar: '#user-bar', align: 'center', width: 180}
             ]
         ]
