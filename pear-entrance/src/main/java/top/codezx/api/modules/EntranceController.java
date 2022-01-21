@@ -1,9 +1,12 @@
 package top.codezx.api.modules;
 
+import lombok.val;
+import org.springframework.web.bind.annotation.RequestParam;
 import top.codezx.common.plugin.logging.aop.annotation.Logging;
 import top.codezx.common.plugin.logging.aop.enums.BusinessType;
 import top.codezx.common.tools.SecurityUtil;
 import top.codezx.common.web.base.BaseController;
+import top.codezx.common.web.domain.response.Result;
 import top.codezx.secure.session.SecureSessionService;
 import io.swagger.annotations.Api;
 import org.springframework.security.core.session.SessionRegistry;
@@ -42,6 +45,10 @@ public class EntranceController extends BaseController {
             return jumpPage("login");
         }
     }
+
+
+
+
 
     /**
      * Describe: 获取主页视图

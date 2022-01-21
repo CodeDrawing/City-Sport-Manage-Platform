@@ -19,6 +19,9 @@
         where sp.manager_id=su.user_id and sp.dept_id=sd.dept_id
     </select>
 
-
+    <select id="arrivalLogin" parameterType="java.lang.String" resultType="top.codezx.system.domain.SysUser">
+        select * from sys_user
+        where username=#{username}
+    </select>
 
 </mapper>

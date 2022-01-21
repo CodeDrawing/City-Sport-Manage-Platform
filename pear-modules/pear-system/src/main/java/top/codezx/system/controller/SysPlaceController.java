@@ -4,22 +4,26 @@ import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import top.codezx.common.constant.ControllerConstant;
 import top.codezx.common.plugin.logging.aop.annotation.Logging;
 import top.codezx.common.plugin.logging.aop.enums.BusinessType;
+import top.codezx.common.tools.SecurityUtil;
 import top.codezx.common.web.base.BaseController;
 import top.codezx.common.web.domain.request.PageDomain;
 import top.codezx.common.web.domain.response.Result;
 import top.codezx.common.web.domain.response.module.ResultTable;
 import top.codezx.system.domain.SysPlace;
+
 import top.codezx.system.domain.SysUser;
 import top.codezx.system.service.ISysPlaceService;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @RestController
 @Api(tags = {"场所管理"})
@@ -72,11 +76,11 @@ public class SysPlaceController extends BaseController {
                                @RequestParam("password")String password,
                                @RequestParam("placeName")String placeName,
                                @RequestParam("placeId")String placeId){
-    System.out.println(username);
     System.out.println(password);
-    System.out.println(placeName);
-    System.out.println(placeId);
-        Boolean result = true;
+
+        SysUser sysUsers = iSysPlaceService.arrivalLogin(username, password);
+        boolean result = new BCryptPasswordEncoder().matches(password, sysUsers.getPassword());
+    System.out.println(result);
         return decide(result);
     }
 
