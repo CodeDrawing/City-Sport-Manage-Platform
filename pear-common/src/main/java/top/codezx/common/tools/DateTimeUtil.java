@@ -20,6 +20,22 @@ public class DateTimeUtil {
 
     /**
      * 计算两个时间差
+     * 2022年1月21日自己修改了，原函数在下面
+     */
+    public static long getYear(Date endDate, Date nowDate) {
+        long nd = 1000 * 24 * 60 * 60;
+
+        // 获得两个时间的毫秒时间差异
+        long diff = endDate.getTime() - nowDate.getTime();
+        // 计算差多少天
+        long day = diff / nd;
+
+        return day;
+    }
+
+    /**
+     * 计算两个时间差
+     *
      */
     public static String getDatePoor(Date endDate, Date nowDate) {
         long nd = 1000 * 24 * 60 * 60;

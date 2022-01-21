@@ -24,4 +24,26 @@
         where username=#{username}
     </select>
 
+    <select id="alreadyHaveTheDate" parameterType="java.lang.String" resultType="top.codezx.system.domain.SysArrivalInfo">
+        select * from sys_arrivalInfo
+        where date=#{date} and place_name=#{placeName}
+    </select>
+
+    <update id="updateUnder18" parameterType="top.codezx.system.domain.SysArrivalInfo">
+        update sys_arrivalInfo set under18=#{under18}+1
+        where date=#{date} and place_name=#{placeName}
+    </update>
+    <update id="updateUnder18To30" parameterType="top.codezx.system.domain.SysArrivalInfo">
+        update sys_arrivalInfo set the18To30=#{the18To30}+1
+        where date=#{date} and place_name=#{placeName}
+    </update>
+    <update id="updateUnder31To60" parameterType="top.codezx.system.domain.SysArrivalInfo">
+        update sys_arrivalInfo set the31To60=#{the31To60}+1
+        where date=#{date} and place_name=#{placeName}
+    </update>
+    <update id="updateAbove61" parameterType="top.codezx.system.domain.SysArrivalInfo">
+        update sys_arrivalInfo set above61=#{above61}+1
+        where date=#{date} and place_name=#{placeName}
+    </update>
+
 </mapper>

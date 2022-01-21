@@ -11,11 +11,13 @@ import org.springframework.web.servlet.ModelAndView;
 import top.codezx.common.constant.ControllerConstant;
 import top.codezx.common.plugin.logging.aop.annotation.Logging;
 import top.codezx.common.plugin.logging.aop.enums.BusinessType;
+import top.codezx.common.tools.DateTimeUtil;
 import top.codezx.common.tools.SecurityUtil;
 import top.codezx.common.web.base.BaseController;
 import top.codezx.common.web.domain.request.PageDomain;
 import top.codezx.common.web.domain.response.Result;
 import top.codezx.common.web.domain.response.module.ResultTable;
+import top.codezx.system.domain.SysArrivalInfo;
 import top.codezx.system.domain.SysPlace;
 
 import top.codezx.system.domain.SysUser;
@@ -23,6 +25,8 @@ import top.codezx.system.service.ISysPlaceService;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -76,11 +80,35 @@ public class SysPlaceController extends BaseController {
                                @RequestParam("password")String password,
                                @RequestParam("placeName")String placeName,
                                @RequestParam("placeId")String placeId){
-    System.out.println(password);
+//          根据username查询出该用户的密码，然后得到用户信息，返回到这层
+        SysUser sysUser = iSysPlaceService.arrivalLogin(username);
+//        根据BCryptPasswordEncoder类中的matches方法对密码进行判断，因为数据库中的密码是加密了的，所以要这样进行判断
 
-        SysUser sysUsers = iSysPlaceService.arrivalLogin(username, password);
-        boolean result = new BCryptPasswordEncoder().matches(password, sysUsers.getPassword());
-    System.out.println(result);
+        boolean result = new BCryptPasswordEncoder().matches(password, sysUser.getPassword());
+        if(result==true){
+            //把时间格式设置为年月日的规范型
+            SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+//            判断数据库中有没有该场馆今日的到场信息，如果有，就直接添加，否则就插入再添加
+            SysArrivalInfo arrivalInfo = iSysPlaceService.alreadyHaveTheDate(sdf.format(new Date()),placeName);
+      //            已经有了？那就根据生日得到年龄
+            if(arrivalInfo!=null){
+                //days表示天数
+                long days = DateTimeUtil.getYear(new Date(),sysUser.getBirthday());
+                //days除365表示多少岁（大概）
+                long year=days/365;
+        System.out.println(year);
+                //分别判断小于18，小于30，小于60，和60以上的用户
+                if(year<18){
+                    iSysPlaceService.updateUnder18(arrivalInfo);
+                }else if(year<30){
+                    iSysPlaceService.updateUnder18To30(arrivalInfo);
+                }else if(year<60){
+                    iSysPlaceService.updateUnder31To60(arrivalInfo);
+                }else{
+                    iSysPlaceService.updateAbove61(arrivalInfo);
+                }
+            }
+        }
         return decide(result);
     }
 

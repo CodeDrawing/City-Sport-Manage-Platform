@@ -22,6 +22,7 @@
         <result property="updateBy" column="update_by"></result>
         <result property="lastTime" column="last_time"></result>
         <result property="remark" column="remark"></result>
+        <result property="birthday" column="birthday"></result>
     </resultMap>
 
     <!--根据 Username 加载 SysUser -->
@@ -98,6 +99,9 @@
             <if test="username!=null">
                 username,
             </if>
+            <if test="birthday!=null">
+                birthday,
+            </if>
             <if test="password!=null">
                 password,
             </if>
@@ -138,6 +142,9 @@
             </if>
             <if test="username!=null">
                 #{username},
+            </if>
+            <if test="birthday!=null">
+                #{birthday},
             </if>
             <if test="password!=null">
                 #{password},
@@ -190,6 +197,9 @@
             </if>
             <if test="email!=null and email!=''">
                 email = #{email},
+            </if>
+            <if test="birthday!=null and birthday!=''">
+                birthday = #{birthday},
             </if>
             <if test="sex!=null and sex!=''">
                 sex = #{sex},

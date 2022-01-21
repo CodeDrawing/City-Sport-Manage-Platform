@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -53,6 +54,11 @@ public class SysUser extends BaseDomain implements UserDetails, CredentialsConta
      * 姓名
      */
     private String realName;
+
+    /**
+     * 生日
+     */
+    private Date birthday;
 
     /**
      * 邮箱
