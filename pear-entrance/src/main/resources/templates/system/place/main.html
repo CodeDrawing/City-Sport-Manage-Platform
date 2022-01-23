@@ -57,6 +57,9 @@
     <button sec:authorize="hasPermission('/system/place/remove','sys:place:remove')"
             class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove"><i class="pear-icon pear-icon-ashbin"></i>
     </button>
+    <button sec:authorize="hasPermission('/system/place/qrInfo','sys:place:qrInfo')"
+            class="pear-btn pear-btn-danger pear-btn-sm" lay-event="qrInfo"><i class="pear-icon pear-icon-ashbin"></i>
+    </button>
 
 </script>
 
@@ -85,6 +88,7 @@
                 {title: '管理员姓名', field: 'userName', align: 'center'},
                 {title: '公告', field: 'notice', align: 'center'},
                 {title: '所属部门', field: 'deptName', align: 'center'},
+                {title: '打卡二维码路径', field: 'qrinfo', align: 'center', width: 250},
                 {title: '操作', toolbar: '#user-bar', align: 'center', width: 180}
             ]
         ]
@@ -130,8 +134,8 @@
                 window.remove(obj);
             } else if (obj.event === 'edit') {
                 window.edit(obj);
-            }else if (obj.event === 'editpasswordadmin') {
-                window.editpasswordadmin(obj);
+            }else if (obj.event === 'qrInfo') {
+                window.rqInfo(obj);
             }
         });
 
@@ -154,30 +158,7 @@
             return false;
         });
 
-        form.on('switch(user-enable)', function (obj) {
-            let operate;
-            if (obj.elem.checked) {
-                operate = "enable";
-            } else {
-                operate = "disable";
-            }
-            let loading = layer.load();
-            $.ajax({
-                url: '/system/user/' + operate,
-                data: JSON.stringify({userId: this.value}),
-                dataType: 'json',
-                contentType: 'application/json',
-                type: 'put',
-                success: function (result) {
-                    layer.close(loading);
-                    if (result.success) {
-                        popup.success(result.msg);
-                    } else {
-                        popup.failure(result.msg);
-                    }
-                }
-            })
-        });
+
 
         window.add = function () {
             layer.open({
@@ -196,6 +177,15 @@
                 shade: 0.1,
                 area: ['550px', '500px'],
                 content: MODULE_PATH + 'edit?PlaceId=' + obj.data['PlaceId']
+            });
+        }
+        window.rqInfo = function (obj) {
+            layer.open({
+                type: 2,
+                title: '打卡二维码',
+                shade: 0.1,
+                area: ['550px', '500px'],
+                content: MODULE_PATH + "qrInfo/"+ obj.data['placeId']
             });
         }
 

@@ -58,8 +58,12 @@ public class SysSetupController extends BaseController implements ApplicationEve
 
         SysConfig uploadKindConfig = sysConfigService.getByCode(ConfigurationConstant.UPLOAD_KIND);
         SysConfig uploadPathConfig = sysConfigService.getByCode(ConfigurationConstant.UPLOAD_PATH);
+
         sysSetup.setUploadKind(uploadKindConfig == null ? "" : uploadKindConfig.getConfigValue());
         sysSetup.setUploadPath(uploadPathConfig == null ? "" : uploadPathConfig.getConfigValue());
+
+        SysConfig localAddConfig = sysConfigService.getByCode(ConfigurationConstant.LOCAL_ADD);
+        sysSetup.setLocalAdd(localAddConfig == null ? "" : localAddConfig.getConfigValue());
 
         model.addAttribute("setup", sysSetup);
         return jumpPage(MODULE_PATH + "main");
@@ -75,6 +79,7 @@ public class SysSetupController extends BaseController implements ApplicationEve
         String pass = sysSetup.getMailPass();
         String port = sysSetup.getMailPort();
         String host = sysSetup.getMailHost();
+        String localAdd = sysSetup.getLocalAdd();
 
         String uploadKind = sysSetup.getUploadKind();
         String uploadPath = sysSetup.getUploadPath();
@@ -84,6 +89,8 @@ public class SysSetupController extends BaseController implements ApplicationEve
         updateSetup("邮箱密码", ConfigurationConstant.MAIN_PASS, pass);
         updateSetup("邮箱端口", ConfigurationConstant.MAIN_PORT, port);
         updateSetup("邮箱主机", ConfigurationConstant.MAIN_HOST, host);
+
+        updateSetup("主机地址", ConfigurationConstant.LOCAL_ADD, localAdd);
 
         updateSetup("上传方式", ConfigurationConstant.UPLOAD_KIND, uploadKind);
         updateSetup("上传路径", ConfigurationConstant.UPLOAD_PATH, uploadPath);

@@ -17,7 +17,7 @@
                 <div class="layui-card-body">
                     <div class="layui-tab layui-tab-brief">
                         <ul class="layui-tab-title">
-                            <li class="layui-this">邮箱设置</li>
+                            <li class="layui-this">系统设置</li>
                         </ul>
                         <div class="layui-tab-content">
                             <div class="layui-tab-item layui-show" style="padding-top: 30px;padding-bottom: 50px;">
@@ -58,6 +58,14 @@
                                     <div class="layui-input-block">
                                         <input class="layui-input" name="mailPass" placeholder="请输入密码"
                                                th:value="${setup.mailPass}" type="text">
+                                    </div>
+                                </div>
+                                <br/>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">主机地址</label>
+                                    <div class="layui-input-block">
+                                        <input class="layui-input" name="localAdd" placeholder="请输入主机地址"
+                                               th:value="${setup.localAdd}" type="text">
                                     </div>
                                 </div>
                             </div>

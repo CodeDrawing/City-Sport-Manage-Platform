@@ -19,4 +19,6 @@ public class SysSetup {
 
     private String uploadPath;
 
+    private String localAdd;
+
 }

@@ -146,6 +146,20 @@ public class SysPlaceController extends BaseController {
         PageInfo<SysPlace> pageInfo = iSysPlaceService.page(param, pageDomain);
         return pageTable(pageInfo.getList(), pageInfo.getTotal());
     }
+    /**
+     * Describe: 生成二维码
+     * Param ModelAndView
+     * Return 跳转到生成二维码页面
+     */
+    @GetMapping("qrInfo/{placeId}")
+    @ApiOperation(value = "生成二维码")
+    @PreAuthorize("hasPermission('/system/place/qrInfo','sys:place:qrInfo')")
+    @Logging(title = "生成二维码", describe = "生成二维码", type = BusinessType.QUERY)
+    public ModelAndView qrInfo(Model model,@PathVariable("placeId") String placeId) {
+        SysPlace sysPlace = iSysPlaceService.selectById(placeId);
+        model.addAttribute("qrInfo",sysPlace.getQRInfo());
+        return jumpPage(MODULE_PATH+"placeQR");
+    }
 
 
 

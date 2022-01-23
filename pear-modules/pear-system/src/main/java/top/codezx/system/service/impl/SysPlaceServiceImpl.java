@@ -88,4 +88,10 @@ public class SysPlaceServiceImpl implements ISysPlaceService {
         }
     }
 
+    @Override
+    public SysPlace selectById(String placeId) {
+        SysPlace sysPlace = sysPlaceMapper.selectById(placeId);
+        return sysPlace;
+    }
+
 }

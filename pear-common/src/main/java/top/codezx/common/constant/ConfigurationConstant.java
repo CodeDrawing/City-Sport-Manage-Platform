@@ -21,4 +21,6 @@ public class ConfigurationConstant {
 
     public final static String UPLOAD_PATH = "upload_path";
 
+    public final static String LOCAL_ADD = "local_add";
+
 }

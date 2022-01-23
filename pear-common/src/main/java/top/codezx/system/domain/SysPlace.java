@@ -23,6 +23,7 @@ public class SysPlace {
     String deptId;
     String deptName;
     String userName;
+    String QRInfo;
 
 
 }

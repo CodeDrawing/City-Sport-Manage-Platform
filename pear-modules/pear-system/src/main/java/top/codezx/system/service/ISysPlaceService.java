@@ -22,5 +22,7 @@ public interface ISysPlaceService {
     boolean updateUnder18To30(SysArrivalInfo sysArrivalInfo);
     boolean updateUnder31To60(SysArrivalInfo sysArrivalInfo);
     boolean updateAbove61(SysArrivalInfo sysArrivalInfo);
+    SysPlace selectById(String placeId);
+
 
 }

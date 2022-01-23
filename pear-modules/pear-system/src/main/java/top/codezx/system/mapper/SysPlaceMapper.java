@@ -32,6 +32,7 @@ public interface SysPlaceMapper {
     int updateUnder18To30(SysArrivalInfo sysArrivalInfo);
     int updateUnder31To60(SysArrivalInfo sysArrivalInfo);
     int updateAbove61(SysArrivalInfo sysArrivalInfo);
+    SysPlace selectById(String placeId);
 
 
 }

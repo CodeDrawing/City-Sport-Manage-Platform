@@ -45,5 +45,9 @@
         update sys_arrivalInfo set above61=#{above61}+1
         where date=#{date} and place_name=#{placeName}
     </update>
+    <select id="selectById" parameterType="java.lang.String" resultType="top.codezx.system.domain.SysPlace">
+        select * from sys_placeInfo
+        where place_id=#{placeId}
+    </select>
 
 </mapper>
