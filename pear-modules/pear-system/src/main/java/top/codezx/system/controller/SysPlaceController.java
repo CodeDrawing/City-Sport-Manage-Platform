@@ -158,6 +158,7 @@ public class SysPlaceController extends BaseController {
     public ModelAndView qrInfo(Model model,@PathVariable("placeId") String placeId) {
         SysPlace sysPlace = iSysPlaceService.selectById(placeId);
         model.addAttribute("qrInfo",sysPlace.getQRInfo());
+        model.addAttribute("placeName",sysPlace.getPlaceName());
         return jumpPage(MODULE_PATH+"placeQR");
     }
 

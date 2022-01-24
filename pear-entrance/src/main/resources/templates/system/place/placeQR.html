@@ -1,15 +1,26 @@
 <!DOCTYPE>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ko" lang="ko">
 <head>
-    <title>场馆打卡二维码</title>
+    <title>场馆打卡</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
     <script type="text/javascript" src="../../../admin/js/jquery.min.js"></script>
     <script type="text/javascript" src="../../../admin/js/qcode.js"></script>
+    <link href="../../admin/css/admin.css" rel="stylesheet"/>
 </head>
 <body>
+
 <input id="add" type="hidden" th:value="${qrInfo}" style="width:80%" /><br />
-<div id="qrcode" style="width:100px; height:100px;margin-top:15px;"></div>
+<div class="layui-card">
+
+    <div class="layui-card-body">
+        <table id="qrcode" ></table>
+    </div>
+    <span class="pear-text">
+        [[${placeName}]]
+    </span>
+</div>
+
 
 <script type="text/javascript">
     var qrcode = new QRCode(document.getElementById("qrcode"), {
@@ -19,15 +30,13 @@
 
     function makeCode () {
         var elText = document.getElementById("add");
-        alert(elText)
         if (!elText.value) {
-            alert("Input a text");
             elText.focus();
             return;
         }
 
-        qrcode.makeCode('http://192.168.0.103:8081/system/place/toArrivalLogin/'+elText.value);
-        // qrcode.makeCode(elText.value);
+        // qrcode.makeCode('http://192.168.0.103:8081/system/place/toArrivalLogin/'+elText.value);
+        qrcode.makeCode(elText.value);
     }
 
     makeCode();
