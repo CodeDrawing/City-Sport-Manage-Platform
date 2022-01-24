@@ -13,6 +13,8 @@ import top.codezx.common.web.base.BaseController;
 import top.codezx.common.web.domain.request.PageDomain;
 import top.codezx.common.web.domain.response.Result;
 import top.codezx.common.web.domain.response.module.ResultTable;
+import top.codezx.common.web.domain.response.module.ResultTree;
+import top.codezx.system.domain.SysDept;
 import top.codezx.system.domain.SysUser;
 import top.codezx.system.domain.vo.EditPassword;
 import top.codezx.system.service.ISysLogService;
@@ -30,6 +32,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Describe: 用户控制器
@@ -88,6 +91,11 @@ public class SysUserController extends BaseController {
     public ResultTable data(PageDomain pageDomain, SysUser param) {
         PageInfo<SysUser> pageInfo = sysUserService.page(param, pageDomain);
         return pageTable(pageInfo.getList(), pageInfo.getTotal());
+    }
+    @GetMapping("tree")
+    public ResultTree tree(SysUser param){
+        List<SysUser> data = sysUserService.list(param);
+        return dataTree(data);
     }
 
     /**

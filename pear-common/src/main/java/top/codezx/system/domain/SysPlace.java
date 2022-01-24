@@ -15,9 +15,8 @@ import java.util.Date;
 public class SysPlace {
     String placeId;
     String placeName;
-    String createAdministratorsId;
     String sportProject;
-    Date createData;
+    Date createDate;
     String notice;
     String managerId;
     String deptId;

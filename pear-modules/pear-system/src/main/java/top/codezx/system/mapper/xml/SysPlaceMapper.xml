@@ -2,16 +2,17 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="top.codezx.system.mapper.SysPlaceMapper">
 
-    <resultMap id="SysPlaceMap" type="top.codezx.system.domain.SysPlace">
+    <resultMap id="SysPlaceMap" type="SysPlace">
         <id column="place_id" property="placeId"></id>
         <result column="place_name" property="placeName"></result>
         <result column="create_administrators_id" property="createAdministratorsId"></result>
         <result column="sport_project" property="sportProject"></result>
-        <result column="create_date" property="createData"></result>
+        <result column="create_date" property="createDate"></result>
         <result column="manager_id" property="managerId"></result>
         <result column="notice" property="notice"></result>
         <result column="dept_id" property="deptId"></result>
         <result column="dept_name" property="deptName"></result>
+        <result column="QRInfo" property="QRInfo"></result>
     </resultMap>
 
     <select id="selectList" resultMap="SysPlaceMap">
@@ -28,6 +29,9 @@
         select * from sys_arrivalInfo
         where date=#{date} and place_name=#{placeName}
     </select>
+    <insert id="insertArrivalInfo" parameterType="top.codezx.system.domain.SysArrivalInfo" >
+        insert into sys_arrivalInfo (date,place_name,arrival_info_id,place_id) values (#{date},#{placeName},#{arrivalInfoId},#{placeId})
+    </insert>
 
     <update id="updateUnder18" parameterType="top.codezx.system.domain.SysArrivalInfo">
         update sys_arrivalInfo set under18=#{under18}+1
@@ -45,9 +49,84 @@
         update sys_arrivalInfo set above61=#{above61}+1
         where date=#{date} and place_name=#{placeName}
     </update>
+    <update id="updateManNumber" parameterType="top.codezx.system.domain.SysArrivalInfo">
+        update sys_arrivalInfo set the_number_of_man=#{theNumberOfMan}+1
+        where date=#{date} and place_name=#{placeName}
+    </update>
+    <update id="updateWomanNumber" parameterType="top.codezx.system.domain.SysArrivalInfo">
+        update sys_arrivalInfo set the_number_of_woman=#{theNumberOfWoman}+1
+        where date=#{date} and place_name=#{placeName}
+    </update>
     <select id="selectById" parameterType="java.lang.String" resultType="top.codezx.system.domain.SysPlace">
-        select * from sys_placeInfo
-        where place_id=#{placeId}
+        select * from sys_placeInfo sp,sys_user su,sys_dept sd
+        where sp.manager_id=su.user_id and sp.dept_id=sd.dept_id and place_id=#{placeId}
     </select>
+    <insert id="insert" parameterType="SysPlace">
+        insert into sys_placeInfo
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="placeId!=null">
+                place_id,
+            </if>
+            <if test="placeName!=null">
+                place_name,
+            </if>
+            <if test="managerId!=null">
+                manager_id,
+            </if>
+            <if test="sportProject!=null">
+                sport_project,
+            </if>
+            <if test="createDate!=null">
+                create_date,
+            </if>
+            <if test="notice!=null">
+                notice,
+            </if>
+            <if test="deptId!=null">
+                dept_id,
+            </if>
+            <if test="QRInfo!=null">
+                QRInfo,
+            </if>
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+            <if test="placeId!=null">
+                #{placeId},
+            </if>
+            <if test="placeName!=null">
+                #{placeName},
+            </if>
+            <if test="managerId!=null">
+                #{managerId},
+            </if>
+            <if test="sportProject!=null">
+                #{sportProject},
+            </if>
+            <if test="createDate!=null">
+                #{createDate},
+            </if>
+            <if test="notice!=null">
+                #{notice},
+            </if>
+            <if test="deptId!=null">
+                #{deptId},
+            </if>
+            <if test="QRInfo!=null">
+                #{QRInfo},
+            </if>
 
+        </trim>
+    </insert>
+    <delete id="deleteById" parameterType="java.lang.String">
+        delete from sys_placeInfo
+        where place_id=#{placeId}
+    </delete>
+    <delete id="deleteByIds" parameterType="java.lang.String">
+        delete from sys_placeInfo where place_id in
+        <foreach collection="array" item = "id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    
 </mapper>

@@ -12,9 +12,9 @@
 
                 <label class="layui-form-label">场所名称</label>
                 <div class="layui-input-inline">
-                    <input class="layui-input" name="username" placeholder="" type="text">
+                    <input class="layui-input" name="placeName" placeholder="" type="text">
                 </div>
-                <button class="pear-btn pear-btn-md pear-btn-primary" lay-filter="user-query" lay-submit>
+                <button class="pear-btn pear-btn-md pear-btn-primary" lay-filter="place-query" lay-submit>
                     <i class="layui-icon layui-icon-search"></i>
                     查询
                 </button>
@@ -58,13 +58,13 @@
             class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove"><i class="pear-icon pear-icon-ashbin"></i>
     </button>
     <button sec:authorize="hasPermission('/system/place/qrInfo','sys:place:qrInfo')"
-            class="pear-btn pear-btn-danger pear-btn-sm" lay-event="qrInfo"><i class="pear-icon pear-icon-ashbin"></i>
+            class="pear-btn pear-btn-danger pear-btn-sm" lay-event="qrInfo"><i class="pear-icon pear-icon-attachment"></i>
     </button>
 
 </script>
 
-<script id="place-createData" type="text/html">
-    {{layui.util.toDateString(d.createData,  'yyyy-MM-dd HH:mm:ss')}}
+<script id="place-createDate" type="text/html">
+    {{layui.util.toDateString(d.createDate,  'yyyy-MM-dd HH:mm:ss')}}
 </script>
 
 
@@ -84,9 +84,10 @@
             [
                 {type: 'checkbox'},
                 {title: '场馆名称', field: 'placeName', align: 'center'},
-                {title: '创建时间', field: 'createData', align: 'center', templet: "#place-createData"},
+                {title: '创建时间', field: 'createDate', align: 'center', templet: "#place-createDate"},
                 {title: '管理员姓名', field: 'userName', align: 'center'},
                 {title: '公告', field: 'notice', align: 'center'},
+                {title: '运动项目', field: 'sportProject', align: 'center'},
                 {title: '所属部门', field: 'deptName', align: 'center'},
                 {title: '打卡二维码路径', field: 'qrinfo', align: 'center', width: 250},
                 {title: '操作', toolbar: '#user-bar', align: 'center', width: 180}
@@ -176,7 +177,7 @@
                 title: '修改',
                 shade: 0.1,
                 area: ['550px', '500px'],
-                content: MODULE_PATH + 'edit?PlaceId=' + obj.data['PlaceId']
+                content: MODULE_PATH + "edit/"+ obj.data['placeId']
             });
         }
         window.rqInfo = function (obj) {
@@ -195,7 +196,7 @@
                 layer.close(index);
                 let loading = layer.load();
                 $.ajax({
-                    url: MODULE_PATH + "remove/" + obj.data['PlaceId'],
+                    url: MODULE_PATH + "remove/" + obj.data['placeId'],
                     dataType: 'json',
                     type: 'delete',
                     success: function (result) {
@@ -213,7 +214,7 @@
         }
 
         window.batchRemove = function (obj) {
-            let ids = common.checkField(obj, 'userId');
+            let ids = common.checkField(obj, 'placeId');
             if (common.isEmpty(ids)) {
                 popup.warning("未选中数据");
                 return false;

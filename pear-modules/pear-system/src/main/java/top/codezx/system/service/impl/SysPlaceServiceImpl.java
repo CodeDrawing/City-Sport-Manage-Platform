@@ -5,6 +5,7 @@ package top.codezx.system.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import top.codezx.common.web.domain.request.PageDomain;
 import top.codezx.system.domain.SysArrivalInfo;
 import top.codezx.system.domain.SysPlace;
@@ -49,6 +50,12 @@ public class SysPlaceServiceImpl implements ISysPlaceService {
     }
 
     @Override
+    public int insertArrivalInfo(SysArrivalInfo sysArrivalInfo) {
+        int i = sysPlaceMapper.insertArrivalInfo(sysArrivalInfo);
+        return 0;
+    }
+
+    @Override
     public boolean updateUnder18(SysArrivalInfo sysArrivalInfo) {
         int i = sysPlaceMapper.updateUnder18(sysArrivalInfo);
         if(i==1){
@@ -89,9 +96,53 @@ public class SysPlaceServiceImpl implements ISysPlaceService {
     }
 
     @Override
+    public boolean updateManNumber(SysArrivalInfo sysArrivalInfo) {
+        int i = sysPlaceMapper.updateManNumber(sysArrivalInfo);
+        if(i==1){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    @Override
+    public boolean updateWomanNumber(SysArrivalInfo sysArrivalInfo) {
+        int i = sysPlaceMapper.updateWomanNumber(sysArrivalInfo);
+        if(i==1){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    @Override
     public SysPlace selectById(String placeId) {
         SysPlace sysPlace = sysPlaceMapper.selectById(placeId);
         return sysPlace;
+    }
+
+    @Override
+    public boolean insert(SysPlace sysPlace) {
+        boolean result = sysPlaceMapper.insert(sysPlace);
+        return result;
+    }
+
+    @Override
+    public boolean deleteById(String placeId) {
+        boolean result = sysPlaceMapper.deleteById(placeId);
+        return result;
+    }
+
+    /**
+     * Describe: 根据 id 批量删除用户数据
+     * Param: ids
+     * Return: Boolean
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public boolean batchRemove(String[] ids) {
+        sysPlaceMapper.deleteByIds(ids);
+        return true;
     }
 
 }

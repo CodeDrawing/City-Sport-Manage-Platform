@@ -11,7 +11,7 @@ import java.util.Date;
 @NoArgsConstructor
 @ToString
 public class SysArrivalInfo {
-  String arrival_info_id;
+  String arrivalInfoId;
   Integer theNumberOfMan;
   Integer theNumberOfWoman;
   Integer Under18;
@@ -21,4 +21,5 @@ public class SysArrivalInfo {
   Integer theNumberOfPeople;
   Date date;
   String placeName;
+  String placeId;
 }

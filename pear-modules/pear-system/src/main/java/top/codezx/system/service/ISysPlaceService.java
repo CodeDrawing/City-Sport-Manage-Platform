@@ -17,12 +17,20 @@ public interface ISysPlaceService {
     SysUser arrivalLogin(String username);
 
     SysArrivalInfo alreadyHaveTheDate(String date,String placeName);
+    //    数据库中没有今天该场所的信息，那么就使用这个方法进行添加记录
+    int insertArrivalInfo(SysArrivalInfo sysArrivalInfo);
 
     boolean updateUnder18(SysArrivalInfo sysArrivalInfo);
     boolean updateUnder18To30(SysArrivalInfo sysArrivalInfo);
     boolean updateUnder31To60(SysArrivalInfo sysArrivalInfo);
     boolean updateAbove61(SysArrivalInfo sysArrivalInfo);
-    SysPlace selectById(String placeId);
 
+    boolean updateManNumber(SysArrivalInfo sysArrivalInfo);
+    boolean updateWomanNumber(SysArrivalInfo sysArrivalInfo);
+
+    SysPlace selectById(String placeId);
+    boolean insert(SysPlace sysPlace);
+    boolean deleteById(String placeId);
+    boolean batchRemove(String[] ids);
 
 }
