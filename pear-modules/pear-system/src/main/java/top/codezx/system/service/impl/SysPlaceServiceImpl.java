@@ -141,8 +141,14 @@ public class SysPlaceServiceImpl implements ISysPlaceService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean batchRemove(String[] ids) {
-        sysPlaceMapper.deleteByIds(ids);
-        return true;
+        boolean result = sysPlaceMapper.deleteByIds(ids);
+        return result;
+    }
+
+    @Override
+    public boolean updateById(SysPlace sysPlace) {
+        boolean result = sysPlaceMapper.updateById(sysPlace);
+        return result;
     }
 
 }

@@ -11,8 +11,8 @@
                 <div class="layui-form-item layui-hide">
                     <label class="layui-form-label">ID</label>
                     <div class="layui-input-block">
-                        <input autocomplete="off" class="layui-input" lay-verify="required" name="userId"
-                               placeholder="请输入标题" th:value="${sysPlace.placeId}" type="text">
+                        <input autocomplete="off" class="layui-input" lay-verify="required" name="placeId"
+                                th:value="${sysPlace.placeId}" type="text">
                     </div>
                 </div>
                 <div class="layui-form-item">
@@ -40,7 +40,7 @@
                     <label class="layui-form-label">管理员：</label>
                     <div class="layui-input-block">
                         <select name="managerId">
-                            <option value="">[[${sysPlace.userName}]]</option>
+                            <option value="">[[${sysPlace.realName}]]</option>
                             <option th:each="user:${users}" th:text="${user.realName}" th:value="${user.userId}"></option>
                         </select>
                     </div>
@@ -57,7 +57,7 @@
     </div>
     <div class="bottom">
         <div class="button-container">
-            <button class="pear-btn pear-btn-primary pear-btn-sm" lay-filter="user-update" lay-submit=""
+            <button class="pear-btn pear-btn-primary pear-btn-sm" lay-filter="place-update" lay-submit=""
                     type="submit">
                 <i class="layui-icon layui-icon-ok"></i>
                 提交
@@ -87,13 +87,7 @@
             selectInitVal: [[${sysPlace.deptId}]]
         });
 
-        form.on('submit(user-update)', function (data) {
-            let roleIds = "";
-            $('input[type=checkbox]:checked').each(function () {
-                roleIds += $(this).val() + ",";
-            });
-            roleIds = roleIds.substr(0, roleIds.length - 1);
-            data.field.roleIds = roleIds;
+        form.on('submit(place-update)', function (data) {
             $.ajax({
                 url: '/system/place/update',
                 data: JSON.stringify(data.field),
@@ -104,7 +98,7 @@
                     if (result.success) {
                         layer.msg(result.msg, {icon: 1, time: 1000}, function () {
                             parent.layer.close(parent.layer.getFrameIndex(window.name));//关闭当前页
-                            parent.layui.table.reload("user-table");
+                            parent.layui.table.reload("place-table");
                         });
                     } else {
                         layer.msg(result.msg, {icon: 2, time: 1000});

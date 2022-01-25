@@ -19,9 +19,10 @@ public class SysPlace {
     Date createDate;
     String notice;
     String managerId;
+    String userId;
     String deptId;
     String deptName;
-    String userName;
+    String realName;
     String QRInfo;
 
 

@@ -33,4 +33,7 @@ public interface ISysPlaceService {
     boolean deleteById(String placeId);
     boolean batchRemove(String[] ids);
 
+    boolean updateById(SysPlace sysPlace);
+
+
 }

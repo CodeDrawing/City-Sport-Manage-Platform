@@ -51,6 +51,8 @@ public interface SysPlaceMapper {
     SysPlace selectById(String placeId);
     boolean insert(SysPlace sysPlace);
     boolean deleteById(String placeId);
-    Boolean deleteByIds(String[] ids);
+    boolean deleteByIds(String[] ids);
+
+    boolean updateById(SysPlace sysPlace);
 
 }

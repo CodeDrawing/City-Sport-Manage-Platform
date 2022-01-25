@@ -33,6 +33,7 @@ import top.codezx.system.service.ISysUserService;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -244,6 +245,21 @@ public class SysPlaceController extends BaseController {
         model.addAttribute("sysPlace",iSysPlaceService.selectById(placeId));
         System.out.println(iSysPlaceService.selectById(placeId));
         return jumpPage(MODULE_PATH+"edit");
+    }
+
+    /**
+     * Describe: 场馆信息修改接口
+     * Param ModelAndView
+     * Return 返回场馆信息修改接口
+     */
+    @PutMapping("update")
+    @ApiOperation(value = "修改场馆数据")
+    @PreAuthorize("hasPermission('/system/place/edit','sys:place:edit')")
+    @Logging(title = "修改场馆", describe = "修改场馆", type = BusinessType.EDIT)
+    public Result update(@RequestBody SysPlace sysPlace) {
+        System.out.println(sysPlace);
+        boolean result = iSysPlaceService.updateById(sysPlace);
+        return decide(result);
     }
 
 

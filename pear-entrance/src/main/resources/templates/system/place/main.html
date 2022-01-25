@@ -30,13 +30,13 @@
 <div class="user-main user-collasped">
     <div class="layui-card">
         <div class="layui-card-body">
-            <table id="user-table" lay-filter="user-table"></table>
+            <table id="place-table" lay-filter="place-table"></table>
         </div>
     </div>
 </div>
 </body>
 
-<script id="user-toolbar" type="text/html">
+<script id="place-toolbar" type="text/html">
     <button sec:authorize="hasPermission('/system/place/add','sys:place:add')"
             class="pear-btn pear-btn-primary pear-btn-md" lay-event="add">
         <i class="pear-icon pear-icon-add"></i>
@@ -50,7 +50,7 @@
 
 </script>
 
-<script id="user-bar" type="text/html">
+<script id="place-bar" type="text/html">
     <button sec:authorize="hasPermission('/system/place/edit','sys:place:edit')"
             class="pear-btn pear-btn-primary pear-btn-sm" lay-event="edit"><i class="pear-icon pear-icon-edit"></i>
     </button>
@@ -85,23 +85,23 @@
                 {type: 'checkbox'},
                 {title: '场馆名称', field: 'placeName', align: 'center'},
                 {title: '创建时间', field: 'createDate', align: 'center', templet: "#place-createDate"},
-                {title: '管理员姓名', field: 'userName', align: 'center'},
+                {title: '管理员姓名', field: 'realName', align: 'center'},
                 {title: '公告', field: 'notice', align: 'center'},
                 {title: '运动项目', field: 'sportProject', align: 'center'},
                 {title: '所属部门', field: 'deptName', align: 'center'},
                 {title: '打卡二维码路径', field: 'qrinfo', align: 'center', width: 250},
-                {title: '操作', toolbar: '#user-bar', align: 'center', width: 180}
+                {title: '操作', toolbar: '#place-bar', align: 'center', width: 180}
             ]
         ]
 
         table.render({
-            elem: '#user-table',
+            elem: '#place-table',
             url: MODULE_PATH + 'data',
             page: true,
             cols: cols,
             skin: 'line',
             height: 'full-148',
-            toolbar: '#user-toolbar',
+            toolbar: '#place-toolbar',
             text: {none: '暂无场所信息'},
             defaultToolbar: [{
                 layEvent: 'refresh',
@@ -111,26 +111,8 @@
         });
 
 
-        $(".user-group").click(function () {
-            let group = $(this).attr("user-group");
-            let field = form.val("user-query-form");
-            if (group === "-1") {
-                field.deptId = group;
-                $(this).removeClass("button-default");
-                $(this).prev().removeClass("button-primary");
-                $(this).prev().addClass("button-default");
-                $(this).addClass("button-primary");
-            } else {
-                field.deptId = group;
-                $(this).removeClass("button-default");
-                $(this).next().removeClass("button-primary");
-                $(this).next().addClass("button-default");
-                $(this).addClass("button-primary");
-            }
-            window.refresh(field);
-        })
 
-        table.on('tool(user-table)', function (obj) {
+        table.on('tool(place-table)', function (obj) {
             if (obj.event === 'remove') {
                 window.remove(obj);
             } else if (obj.event === 'edit') {
@@ -140,7 +122,7 @@
             }
         });
 
-        table.on('toolbar(user-table)', function (obj) {
+        table.on('toolbar(place-table)', function (obj) {
             if (obj.event === 'add') {
                 window.add();
             } else if (obj.event === 'refresh') {
@@ -154,7 +136,7 @@
             }
         });
 
-        form.on('submit(user-query)', function (data) {
+        form.on('submit(place-query)', function (data) {
             window.refresh(data.field);
             return false;
         });
@@ -241,7 +223,7 @@
         }
 
         window.refresh = function (param) {
-            table.reload('user-table', {where: param});
+            table.reload('place-table', {where: param});
         }
     })
 </script>

@@ -128,5 +128,28 @@
         </foreach>
     </delete>
 
+    <update id="updateById" parameterType="top.codezx.system.domain.SysPlace">
+        update sys_placeInfo
+        <set>
+            <if test="placeName">
+                place_name = #{placeName},
+            </if>
+            <if test="sportProject">
+                sport_project = #{sportProject},
+            </if>
+            <if test="userId">
+                manager_id = #{userId},
+            </if>
+            <if test="notice">
+                notice = #{notice},
+            </if>
+
+            <if test="deptId">
+                dept_id = #{deptId},
+            </if>
+        </set>
+        where place_id = #{placeId}
+    </update>
+
     
 </mapper>
