@@ -91,12 +91,13 @@ public class SysPlaceController extends BaseController {
                                @RequestParam("password")String password,
                                @RequestParam("placeName")String placeName,
                                @RequestParam("placeId")String placeId){
-//          根据username查询出该用户的密码，然后得到用户信息，返回到这层
+//          根据username查询出该用户的密码，然后得 到用户信息，返回到这层
         SysUser sysUser = iSysPlaceService.arrivalLogin(username);
 //        根据BCryptPasswordEncoder类中的matches方法对密码进行判断，因为数据库中的密码是加密了的，所以要这样进行判断
 
         boolean result = new BCryptPasswordEncoder().matches(password, sysUser.getPassword());
         if(result==true){
+            //把时间格式设置为年月日的规范型
             //把时间格式设置为年月日的规范型
             SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
 //            判断数据库中有没有该场馆今日的到场信息，如果有，就直接添加，否则就插入再添加
